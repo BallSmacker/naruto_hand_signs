@@ -525,7 +525,12 @@ def draw_next_sign_prompt(frame):
 #  MAIN
 # ─────────────────────────────────────────
 def main():
-    cap=cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Error: Could not open camera")
+        return
+
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAM_W)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAM_H)
     cv2.namedWindow("Naruto Jutsu", cv2.WINDOW_NORMAL)
@@ -546,9 +551,9 @@ def main():
             hands_data=[]
             if res and res.multi_hand_landmarks and res.multi_handedness:
                 for lms,hd in zip(res.multi_hand_landmarks,res.multi_handedness):
-                    label=hd.classification[0].label
-                    mp_draw.draw_landmarks(frame,lms,mp_hands.HAND_CONNECTIONS)
-                    hands_data.append((lms,label))
+                    label = hd.classification[0].label
+                    mp_draw.draw_landmarks(frame, lms, mp_hands.HAND_CONNECTIONS)
+                    hands_data.append((lms, label))
 
             # Update palm tracking from first visible hand
             if hands_data:
